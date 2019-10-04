@@ -3,6 +3,8 @@ package com.example.memo;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -11,46 +13,36 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText editText;
+    private List<File> fileList = new ArrayList<>();
 
-    private Button button_save;
+    public MainActivity () {}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editText = (EditText) findViewById(R.id.editText);
-        String inputText = load();
-        if (!TextUtils.isEmpty(inputText)) {
-            editText.setText(inputText);
-            editText.setSelection(inputText.length());
-            Toast.makeText(this, "Restoring succeeded", Toast.LENGTH_SHORT).show();
-        }
+        RecyclerView recyclerView_memos = (RecyclerView) findViewById(R.id.recyclerView_memos);
 
-        button_save= (Button) findViewById(R.id.button_save);
-        button_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String inputText = editText.getText().toString();
-                save(inputText);
-                Toast.makeText(MainActivity.this, "Input text saved", Toast.LENGTH_SHORT).show();
-            }
-        });
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView_memos.setLayoutManager(layoutManager);
+
+        MemoAdapter adapter = new MemoAdapter("/data/data/com.example.memo/files");
+        recyclerView_memos.setAdapter(adapter);
     }
 
-    @Override
-    public void onDestroy () {
-        super.onDestroy();
-    }
 
     public void save (String inputText) {
         FileOutputStream out = null;
@@ -99,6 +91,5 @@ public class MainActivity extends AppCompatActivity {
 
         return content.toString();
     }
-
 
 }
