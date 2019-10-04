@@ -25,6 +25,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    Button button_title_edit;
+
     private List<File> fileList = new ArrayList<>();
 
     public MainActivity () {}
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
         RecyclerView recyclerView_memos = (RecyclerView) findViewById(R.id.recyclerView_memos);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -41,6 +46,15 @@ public class MainActivity extends AppCompatActivity {
 
         MemoAdapter adapter = new MemoAdapter("/data/data/com.example.memo/files");
         recyclerView_memos.setAdapter(adapter);
+
+
+        button_title_edit = (Button) findViewById(R.id.button_title_edit);
+        button_title_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
     }
 
 
