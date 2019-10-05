@@ -50,7 +50,7 @@ public class EditMemoActivity extends AppCompatActivity {
 
         try {
             Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss"); // 会导致一分钟之内的文件被覆盖
 
             file = new File("/data/data/com.example.memo/files/" + dateFormat.format(date));
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
@@ -58,7 +58,7 @@ public class EditMemoActivity extends AppCompatActivity {
 
             // test
             Log.d("EditMemoActivity", "succeeded");
-            
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

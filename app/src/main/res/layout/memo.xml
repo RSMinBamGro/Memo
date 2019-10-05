@@ -8,16 +8,16 @@
     <TextView
         android:id="@+id/textView_content"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
+        android:layout_height="70dp"
+        android:layout_gravity="fill"
+        android:gravity="left|top"
         android:textSize="30sp"/>
 
     <TextView
         android:id="@+id/textView_date"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:gravity="left|bottom"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:gravity="bottom"
         android:textSize="15sp"/>
 
 
