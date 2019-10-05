@@ -1,6 +1,7 @@
 package com.example.memo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,9 +26,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button button_title_edit;
+    RecyclerView recyclerView_memos = null;
 
-    private List<File> fileList = new ArrayList<>();
+    MemoAdapter adapter = null;
+
+    Button button_title_edit = null;
 
     public MainActivity () {}
 
@@ -39,12 +42,12 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 
-        RecyclerView recyclerView_memos = (RecyclerView) findViewById(R.id.recyclerView_memos);
+        recyclerView_memos = (RecyclerView) findViewById(R.id.recyclerView_memos);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView_memos.setLayoutManager(layoutManager);
 
-        MemoAdapter adapter = new MemoAdapter("/data/data/com.example.memo/files");
+        adapter = new MemoAdapter("/data/data/com.example.memo/files");
         recyclerView_memos.setAdapter(adapter);
 
 
@@ -52,58 +55,15 @@ public class MainActivity extends AppCompatActivity {
         button_title_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Intent intent_toEditMemoActivity = new Intent(MainActivity.this, EditMemoActivity.class);
+                startActivity(intent_toEditMemoActivity);
             }
         });
     }
 
-
-    public void save (String inputText) {
-        FileOutputStream out = null;
-        BufferedWriter writer = null;
-
-        try {
-            out = openFileOutput("data", Context.MODE_PRIVATE);
-            writer = new BufferedWriter(new OutputStreamWriter(out));
-            writer.write(inputText);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (writer != null)
-                    writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
+    @Override
+    public void onResume () {
+        super.onResume();
+        adapter.update("/data/data/com.example.memo/files");
     }
-
-    public String load () {
-        FileInputStream in = null;
-        BufferedReader reader = null;
-        StringBuilder  content = new StringBuilder();
-
-        try {
-            in = openFileInput("data");
-            reader = new BufferedReader(new InputStreamReader(in));
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                content.append(line);
-                content.append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if(reader != null)
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-        }
-
-        return content.toString();
-    }
-
 }

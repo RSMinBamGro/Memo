@@ -3,6 +3,7 @@ package com.example.memo;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,11 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder> {
 
         File directory = new File(path);
         File[] files = directory.listFiles();
+
+        // test
+        Integer i = files.length;
+        Log.d("MemoAdapter", i.toString());
+
         for (File file : files) {
             fileList.add(file);
         }
@@ -83,6 +89,21 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.ViewHolder> {
     @Override
     public int getItemCount () {
         return fileList.size();
+    }
+
+    public void update (String path) {
+        fileList.clear();
+
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+
+        // test
+        Integer i = files.length;
+        Log.d("MemoAdapter", i.toString());
+
+        for (File file : files) {
+            fileList.add(file);
+        }
     }
 }
 
