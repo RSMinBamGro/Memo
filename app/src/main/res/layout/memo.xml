@@ -7,9 +7,10 @@
 
     <TextView
         android:id="@+id/textView_content"
-        android:layout_width="150dp"
+        android:layout_width="250dp"
         android:layout_height="70dp"
         android:layout_gravity="fill"
+        android:layout_margin="5dp"
         android:gravity="left|top"
         android:textSize="30sp"/>
 
@@ -17,6 +18,8 @@
         android:id="@+id/textView_date"
         android:layout_width="150dp"
         android:layout_height="70dp"
+        android:layout_gravity="fill"
+        android:layout_margin="5dp"
         android:gravity="bottom"
         android:textSize="15sp"/>
 
