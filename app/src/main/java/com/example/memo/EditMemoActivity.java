@@ -1,7 +1,5 @@
 package com.example.memo;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,27 +8,39 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class EditMemoActivity extends AppCompatActivity {
 
-    EditText editText;
+    private String path;
+    private File file = null;
 
-    Button button_save;
+    private EditText editText;
+    private Button button_save;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editmemo);
 
+        path = getIntent().getStringExtra("path");
+        file = new File(path + "/" + getIntent().getStringExtra("file"));
+
         editText = (EditText) findViewById(R.id.editText);
         button_save = (Button) findViewById(R.id.button_save);
+
+        if (file.exists() && file.isFile())
+            load();
+
+        editText.requestFocus(); // 获取焦点
+
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,14 +55,9 @@ public class EditMemoActivity extends AppCompatActivity {
     }
 
     public void save (String inputText) {
-        File file;
         BufferedWriter writer = null;
 
         try {
-            Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss"); // 会导致一分钟之内的文件被覆盖
-
-            file = new File("/data/data/com.example.memo/files/" + dateFormat.format(date));
             writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
             writer.write(inputText);
 
@@ -70,5 +75,32 @@ public class EditMemoActivity extends AppCompatActivity {
             }
 
         }
+    }
+
+    public void load () {
+        BufferedReader reader = null;
+        StringBuilder content = new StringBuilder();
+
+        try {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                content.append(line + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(reader != null)
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+
+        // test
+        Log.d("EditMemoActivity", "succeeded");
+
+        editText.setText(content);
     }
 }

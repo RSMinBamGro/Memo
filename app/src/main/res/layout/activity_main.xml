@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/title"/>
+    <include layout="@layout/title_mainactivity"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView_memos"
